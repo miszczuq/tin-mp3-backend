@@ -1,0 +1,44 @@
+<%- include('../../fragments/header.ejs') %>
+<main>
+    <div class="main-content">
+        <h2>Lista gokartów</h2>
+        <% if(gokarts.length <= 0 ) { %>
+            <p>Brak rekordów do wyświetlenia</p>
+        <%}else{ %>
+        <div class="table-div">
+            <table class="table-list gokart">
+                <thead>
+                <tr>
+                    <th>Marka</th>
+                    <th>Model</th>
+                    <th>Moc(KM)</th>
+                    <th>Waga(kg)</th>
+                    <th>Akcje</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <% for (let gokart of gokarts) { %>
+                    <tr>
+                        <td><%= gokart.brand %></td>
+                        <td><%= gokart.model %></td>
+                        <td><%= gokart.horse_power %></td>
+                        <td><%= gokart.weight %></td>
+                        <td>
+                            <ul class="list-actions">
+                                <li><a href="/gokarts/details/<%= gokart.id %>"><i class="fas fa-info"></i></a> </li>
+                                <li><a href="/gokarts/edit/<%= gokart.id %>"><i class="far fa-edit"></i></a> </li>
+                                <li><a href="/gokarts/delete/<%= gokart.id %>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="far fa-trash-alt"></i></a> </li>
+                            </ul>
+                        </td>
+                    </tr>
+                <% } %>
+                </tbody>
+            </table>
+            <% } %>
+            <p><a href="/gokarts/add" class="button-add">Dodaj nowy gokart</a></p>
+        </div>
+    </div>
+</main>
+
+<%- include('../../fragments/footer.ejs') %>

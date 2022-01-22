@@ -1,0 +1,43 @@
+<%- include('../../fragments/header.ejs') %>
+<main>
+    <div class="main-content">
+        <h2>Lista kierowców</h2>
+        <% if(drivers.length <= 0 ) { %>
+            <p>Brak rekordów do wyświetlenia</p>
+        <%}else{ %>
+        <div class="table-div">
+            <table class="table-list driver">
+                <thead>
+                <tr>
+                    <th>Imię</th>
+                    <th>Nazwisko</th>
+                    <th>Waga(kg)</th>
+                    <th>Akcje</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <% for (let driver of drivers) { %>
+                <tr>
+                    <td><%= driver.first_name %></td>
+                    <td><%= driver.last_name %></td>
+                    <td><%= driver.weight %></td>
+                    <td>
+                        <ul class="list-actions">
+                            <li><a href="/drivers/details/<%= driver.id %>"><i class="fas fa-info"></i></a> </li>
+                            <li><a href="/drivers/edit/<%= driver.id %>"><i class="far fa-edit"></i></a> </li>
+                            <li><a href="/drivers/delete/<%= driver.id %>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="far fa-trash-alt"></i></a> </li>
+                        </ul>
+                    </td>
+                </tr>
+                <% } %>
+                </tbody>
+            </table>
+            <% } %>
+        <p><a href="/drivers/add" class="button-add">Dodaj nowego kierowcę</a></p>
+        </div>
+    </div>
+</main>
+
+
+<%- include('../../fragments/footer.ejs') %>

@@ -1,0 +1,42 @@
+<%- include('../../fragments/header.ejs') %><main>
+        <div class="main-content">
+            <h2>Lista przejazdów</h2>
+            <% if(driverGokarts.length <= 0 ) { %>
+                <p>Brak rekordów do wyświetlenia</p>
+            <%}else{ %>
+            <div class="table-div">
+                <table class="table-list driver-gokart">
+                    <thead>
+                    <tr>
+                        <th>Kierowca</th>
+                        <th>Gokart</th>
+                        <th>Czas przejazdu(s)</th>
+                        <th>Nawierzchnia</th>
+                        <th>Akcje</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <% for (let driverGokart of driverGokarts) { %>
+                        <tr>
+                            <td><%= driverGokart.driver.first_name + ' ' + driverGokart.driver.last_name %></td>
+                            <td><%= driverGokart.gokart.model %></td>
+                            <td><%= driverGokart.lap_time %></td>
+                            <td><%= driverGokart.wet_track ? 'mokra' : 'sucha' %></td>
+                            <td>
+                                <ul class="list-actions">
+                                    <li><a href="/driverGokarts/details/<%= driverGokart.id %>"><i class="fas fa-info icon-9x"></i></a></li>
+                                    <li><a href="/driverGokarts/edit/<%= driverGokart.id %>"><i class="far fa-edit" ></i></a> </li>
+                                    <li><a href="/driverGokarts/delete/<%= driverGokart.id %>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="far fa-trash-alt"></i></a> </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+                <% } %>
+                <p><a href="/driverGokarts/add" class="button-add">Dodaj nowy przejazd</a></p>
+            </div>
+        </div>
+    </main>
+<%- include('../../fragments/footer.ejs') %>
