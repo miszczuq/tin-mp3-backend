@@ -9,11 +9,13 @@ exports.comparePasswords = ((plainText, passwordHash) => {
     return bcrypt.compareSync(plainText, passwordHash);
 });
 
-exports.permitAuthenticatedUser = (req, res, next) => {
-    const loggedUser = req.session.loggedUser;
-    if (loggedUser) {
-        next();
-    } else {
-        res.status(503).json();
+exports.permitAuthenticatedUserWithRole = (roles) => {
+    return (req, res, next) => {
+        const loggedUser = req.session.loggedUser;
+        if (loggedUser && (roles && roles.includes(loggedUser.role))) {
+            next();
+        } else {
+            res.status(503).json();
+        }
     }
 }

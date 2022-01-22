@@ -25,7 +25,8 @@ exports.getUserById = (req, res) => {
 exports.createUser = (req, res, next) => {
     userRepository.createUser({
         login: req.body.password,
-        password: req.body.password
+        password: authUtil.hashPassword(req.body.password),
+        role: req.body.role
     }).then(newObj => {
         res.status(201).json(newObj);
     }).catch(err => {
