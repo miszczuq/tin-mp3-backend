@@ -5,8 +5,8 @@ exports.getDrivers = (req, res) => {
         .then(drivers => {
             res.status(200).json(drivers);
         })
-        .catch(err => {
-            console.log(err);
+        .catch((err) => {
+            res.status(500).json(err);
         });
 };
 
@@ -22,16 +22,13 @@ exports.getDriverById = (req, res) => {
         });
 };
 
-exports.createDriver = (req, res, next) => {
+exports.createDriver = (req, res) => {
     DriverRepository.createDriver(req.body)
         .then(newObj => {
             res.status(201).json(newObj);
         })
-        .catch(err => {
-            if (!err.statusCode) {
-                err.statusCode = 500;
-            }
-            next(err);
+        .catch((err) => {
+            res.status(500).json(err);
         });
 };
 
@@ -43,10 +40,8 @@ exports.updateDriver = (req, res) => {
                 driver: result
             });
         })
-        .catch(err => {
-            if (!err.statusCode) {
-                err.statusCode = 500;
-            }
+        .catch((err) => {
+            res.status(500).json(err);
         });
 };
 
@@ -58,9 +53,7 @@ exports.deleteDriver = (req, res) => {
                 driver: result
             });
         })
-        .catch(err => {
-            if (!err.statusCode) {
-                err.statusCode = 500;
-            }
+        .catch((err) => {
+            res.status(500).json(err);
         });
 };

@@ -5,8 +5,8 @@ exports.getDriverGokarts = (req, res) => {
         .then(driverGokarts => {
             res.status(200).json(driverGokarts);
         })
-        .catch(err => {
-            console.log(err);
+        .catch((err) => {
+            res.status(500).json(err);
         });
 };
 
@@ -27,11 +27,8 @@ exports.createDriverGokart = (req, res, next) => {
         .then(newObj => {
             res.status(201).json(newObj);
         })
-        .catch(err => {
-            if (!err.statusCode) {
-                err.statusCode = 500;
-            }
-            next(err);
+        .catch((err) => {
+            res.status(500).json(err);
         });
 };
 
@@ -43,10 +40,8 @@ exports.updateDriverGokart = (req, res) => {
                 driverGokart: result
             });
         })
-        .catch(err => {
-            if (!err.statusCode) {
-                err.statusCode = 500;
-            }
+        .catch((err) => {
+            res.status(500).json(err);
         });
 };
 
@@ -58,9 +53,7 @@ exports.deleteDriverGokart = (req, res) => {
                 driverGokart: result
             });
         })
-        .catch(err => {
-            if (!err.statusCode) {
-                err.statusCode = 500;
-            }
+        .catch((err) => {
+            res.status(500).json(err);
         });
 };

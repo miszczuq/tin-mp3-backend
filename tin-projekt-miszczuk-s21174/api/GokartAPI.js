@@ -5,8 +5,8 @@ exports.getGokarts = (req, res) => {
         .then(gokarts => {
             res.status(200).json(gokarts);
         })
-        .catch(err => {
-            console.log(err);
+        .catch((err) => {
+            res.status(500).json(err);
         });
 };
 
@@ -22,16 +22,13 @@ exports.getGokartById = (req, res) => {
         });
 };
 
-exports.createGokart = (req, res, next) => {
+exports.createGokart = (req, res) => {
     GokartRepository.createGokart(req.body)
         .then(newObj => {
             res.status(201).json(newObj);
         })
-        .catch(err => {
-            if (!err.statusCode) {
-                err.statusCode = 500;
-            }
-            next(err);
+        .catch((err) => {
+            res.status(500).json(err);
         });
 };
 
@@ -43,10 +40,8 @@ exports.updateGokart = (req, res) => {
                 gokart: result
             });
         })
-        .catch(err => {
-            if (!err.statusCode) {
-                err.statusCode = 500;
-            }
+        .catch((err) => {
+            res.status(500).json(err);
         });
 };
 
@@ -58,9 +53,7 @@ exports.deleteGokart = (req, res) => {
                 gokart: result
             });
         })
-        .catch(err => {
-            if (!err.statusCode) {
-                err.statusCode = 500;
-            }
+        .catch((err) => {
+            res.status(500).json(err);
         });
 };

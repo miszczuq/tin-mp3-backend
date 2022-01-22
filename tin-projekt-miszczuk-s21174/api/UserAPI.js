@@ -62,7 +62,7 @@ exports.login = (req, res) => {
                 req.session.loggedUser = user;
                 res.status(200).json();
             }
-        })
+        });
 }
 
 exports.logout = (req, res) => {
