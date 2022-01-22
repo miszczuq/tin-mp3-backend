@@ -9,16 +9,16 @@ const DriverGokart = sequelize.define('DriverGokart', {
         primaryKey: true
     },
     lap_time: {
-        type: Sequelize.DECIMAL(7,3),
+        type: Sequelize.DECIMAL(7, 3),
         allowNull: false,
-        validate:{
-            notEmpty:{
+        validate: {
+            notEmpty: {
                 msg: "Pole jest wymagane"
             },
             isDecimal: {
                 msg: "Pole musi być liczbą"
             },
-            min:{
+            min: {
                 args: [0],
                 msg: "Wartość musi być dodatnia"
             }
@@ -27,8 +27,8 @@ const DriverGokart = sequelize.define('DriverGokart', {
     wet_track: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
-        validate:{
-            notNull:{
+        validate: {
+            notNull: {
                 msg: "Pole jest wymagane"
             }
         }
@@ -36,8 +36,8 @@ const DriverGokart = sequelize.define('DriverGokart', {
     driver_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        validate:{
-            notEmpty:{
+        validate: {
+            notEmpty: {
                 msg: "Pole jest wymagane"
             }
         }
@@ -45,8 +45,8 @@ const DriverGokart = sequelize.define('DriverGokart', {
     gokart_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        validate:{
-            notEmpty:{
+        validate: {
+            notEmpty: {
                 msg: "Pole jest wymagane"
             }
         }

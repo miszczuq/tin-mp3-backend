@@ -11,12 +11,12 @@ const Driver = sequelize.define('Driver', {
     first_name: {
         type: Sequelize.STRING,
         allowNull: false,
-        validate:{
-            notEmpty:{
+        validate: {
+            notEmpty: {
                 msg: "Pole jest wymagane"
             },
             len: {
-                args: [2,20],
+                args: [2, 20],
                 msg: "Pole powinno zawierać od 2 do 20 znaków"
             }
         }
@@ -37,12 +37,12 @@ const Driver = sequelize.define('Driver', {
     last_name: {
         type: Sequelize.STRING,
         allowNull: false,
-        validate:{
-            notEmpty:{
+        validate: {
+            notEmpty: {
                 msg: "Pole jest wymagane"
             },
             len: {
-                args: [2,20],
+                args: [2, 20],
                 msg: "Pole powinno zawierać od 2 do 20 znaków"
             }
         }
@@ -50,13 +50,13 @@ const Driver = sequelize.define('Driver', {
     birthdate: {
         type: Sequelize.DATE,
         allowNull: false,
-        validate:{
-            notEmpty:{
+        validate: {
+            notEmpty: {
                 msg: "Pole jest wymagane"
             }
-            ,isBefore:
+            , isBefore:
                 {
-                    args: new Date().toISOString().slice(0,10).replace(/-/g,"-"),
+                    args: new Date().toISOString().slice(0, 10).replace(/-/g, "-"),
                     msg: "Data urodzenia nie może być z przyszłości"
                 }
         }
@@ -64,14 +64,14 @@ const Driver = sequelize.define('Driver', {
     weight: {
         type: Sequelize.DECIMAL,
         allowNull: false,
-        validate:{
-            notEmpty:{
+        validate: {
+            notEmpty: {
                 msg: "Pole jest wymagane"
             },
             isDecimal: {
                 msg: "Pole musi być liczbą"
             },
-            min:{
+            min: {
                 args: [0],
                 msg: "Wartość musi być dodatnia"
             }

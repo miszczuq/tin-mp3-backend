@@ -11,12 +11,12 @@ const Gokart = sequelize.define('Gokart', {
     brand: {
         type: Sequelize.STRING,
         allowNull: false,
-        validate:{
-            notEmpty:{
+        validate: {
+            notEmpty: {
                 msg: "Pole jest wymagane"
             },
             len: {
-                args: [2,20],
+                args: [2, 20],
                 msg: "Pole powinno zawierać od 2 do 20 znaków"
             }
         }
@@ -24,12 +24,12 @@ const Gokart = sequelize.define('Gokart', {
     model: {
         type: Sequelize.STRING,
         allowNull: false,
-        validate:{
-            notEmpty:{
+        validate: {
+            notEmpty: {
                 msg: "Pole jest wymagane"
             },
             len: {
-                args: [2,50],
+                args: [2, 50],
                 msg: "Pole powinno zawierać od 2 do 50 znaków"
             }
         }
@@ -37,12 +37,12 @@ const Gokart = sequelize.define('Gokart', {
     color: {
         type: Sequelize.STRING,
         allowNull: false,
-        validate:{
-            notEmpty:{
+        validate: {
+            notEmpty: {
                 msg: "Pole jest wymagane"
             },
             len: {
-                args: [2,20],
+                args: [2, 20],
                 msg: "Pole powinno zawierać od 2 do 20 znaków"
             }
         }
@@ -50,30 +50,30 @@ const Gokart = sequelize.define('Gokart', {
     horse_power: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        validate:{
-            notEmpty:{
+        validate: {
+            notEmpty: {
                 msg: "Pole jest wymagane"
             },
             isInt: {
                 msg: "Pole musi być liczbą całkowitą"
             },
-            min:{
+            min: {
                 args: [0],
                 msg: "wartość musi być dodatnia"
             }
         }
     },
     weight: {
-        type: Sequelize.DECIMAL(10,3),
+        type: Sequelize.DECIMAL(10, 3),
         allowNull: false,
-        validate:{
-            notEmpty:{
+        validate: {
+            notEmpty: {
                 msg: "Pole jest wymagane"
             },
             isDecimal: {
                 msg: "Pole musi być liczbą"
             },
-            min:{
+            min: {
                 args: [0],
                 msg: "Wartość musi być dodatnia"
             }
@@ -82,14 +82,14 @@ const Gokart = sequelize.define('Gokart', {
     fuel_consumption: {
         type: Sequelize.DECIMAL,
         allowNull: true,
-        validate:{
-            notEmpty:{
+        validate: {
+            notEmpty: {
                 msg: "Pole jest wymagane"
             },
             isDecimal: {
                 msg: "Pole musi być liczbą"
             },
-            min:{
+            min: {
                 args: [0],
                 msg: "Wartość musi być dodatnia"
             }
