@@ -32,13 +32,6 @@ exports.createGokart = (gokartData) => {
 };
 
 exports.updateGokart = (gokartId, gokartData) => {
-    const brand = gokartData.brand;
-    const model = gokartData.model;
-    const color = gokartData.color;
-    const horse_power = gokartData.horse_power;
-    const weight = gokartData.weight;
-    const fuel_consumption = gokartData.fuel_consumption;
-
     return Gokart.update(gokartData, {where: {id: gokartId}});
 };
 
