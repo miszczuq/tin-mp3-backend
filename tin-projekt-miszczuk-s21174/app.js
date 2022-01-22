@@ -4,8 +4,9 @@ const logger = require('morgan');
 const cors = require('cors');
 
 const driverApiRouter = require('./routes/api/driverApiRoute');
-const gokartApiRouter = require('./routes/api/dokartApiRoute');
+const gokartApiRouter = require('./routes/api/gokartApiRoute');
 const driverGokartApiRouter = require('./routes/api/driverGokartApiRoute');
+const userApiRouter = require('./routes/api/userApiRoute');
 
 const app = express();
 app.use(express.json());
@@ -25,5 +26,6 @@ sequelizeInit()
 app.use('/api/drivers', driverApiRouter);
 app.use('/api/gokarts', gokartApiRouter);
 app.use('/api/driverGokarts', driverGokartApiRouter);
+app.use('/api/users', userApiRouter);
 
 module.exports = app;
