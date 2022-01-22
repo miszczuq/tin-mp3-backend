@@ -31,12 +31,6 @@ exports.createDriver = (driverData) => {
 };
 
 exports.updateDriver = (driverId, driverData) => {
-    const first_name = driverData.first_name;
-    const last_name = driverData.last_name;
-    const birthdate = driverData.birthdate;
-    const weight = driverData.weight;
-    const phone_number = driverData.phone_number;
-
     return Driver.update(driverData, {where: {id: driverId}});
 };
 

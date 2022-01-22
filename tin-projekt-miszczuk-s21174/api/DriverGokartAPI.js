@@ -1,6 +1,6 @@
 const DriverGokartRepository = require('../repository/sequelize/DriverGokartRepository');
 
-exports.getDriverGokarts = (req, res, next) => {
+exports.getDriverGokarts = (req, res) => {
     DriverGokartRepository.getDriverGokarts()
         .then(driverGokarts => {
             res.status(200).json(driverGokarts);
@@ -10,14 +10,12 @@ exports.getDriverGokarts = (req, res, next) => {
         });
 };
 
-exports.getDriverGokartById = (req, res, next) => {
+exports.getDriverGokartById = (req, res) => {
     const driverGokartId = req.params.driverGokartId;
     DriverGokartRepository.getDriverGokartById(driverGokartId)
         .then(driverGokart => {
             if (!driverGokart) {
-                res.status(404).json({
-                    message: 'Lap with id: ' + driverGokartId + ' not found'
-                })
+                res.status(404);
             } else {
                 res.status(200).json(driverGokart);
             }
@@ -37,11 +35,13 @@ exports.createDriverGokart = (req, res, next) => {
         });
 };
 
-exports.updateDriverGokart = (req, res, next) => {
+exports.updateDriverGokart = (req, res) => {
     const driverGokartId = req.params.driverGokartId;
     DriverGokartRepository.updateDriverGokart(driverGokartId, req.body)
         .then(result => {
-            res.status(200).json({message: 'Lap updated!', driverGokart: result});
+            res.status(200).json({
+                driverGokart: result
+            });
         })
         .catch(err => {
             if (!err.statusCode) {
@@ -50,11 +50,13 @@ exports.updateDriverGokart = (req, res, next) => {
         });
 };
 
-exports.deleteDriverGokart = (req, res, next) => {
+exports.deleteDriverGokart = (req, res) => {
     const driverGokartId = req.params.driverGokartId;
     DriverGokartRepository.deleteDriverGokart(driverGokartId)
         .then(result => {
-            res.status(200).json({message: 'Lap removed!', driverGokart: result});
+            res.status(200).json({
+                driverGokart: result
+            });
         })
         .catch(err => {
             if (!err.statusCode) {
