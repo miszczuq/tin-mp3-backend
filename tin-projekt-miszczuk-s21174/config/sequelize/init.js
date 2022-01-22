@@ -1,4 +1,5 @@
 const sequelize = require('./sequelize');
+const authUtil = require('../../util/authUtils');
 
 const Driver = require('../../model/sequelize/Driver');
 const Gokart = require('../../model/sequelize/Gokart');
@@ -115,7 +116,7 @@ module.exports = () => {
             return User.bulkCreate([
                 {
                     username: 'admin',
-                    password: 'admin',
+                    password: authUtil.hashPassword('admin'),
                     role: 'admin'
                 },
             ]).then(() => {

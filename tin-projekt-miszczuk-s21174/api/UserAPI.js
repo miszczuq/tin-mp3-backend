@@ -1,5 +1,5 @@
 const userRepository = require('../repository/sequelize/UserRepository');
-
+const authUtil = require('../util/authUtils');
 
 exports.getUsers = (req, res) => {
     userRepository.getUsers()
@@ -36,9 +36,8 @@ exports.createUser = (req, res, next) => {
     });
 };
 
-
 exports.deleteUser = (req, res) => {
-    userRepository.deleteUser(req.params.userId)
+    userRepository.deleteUser(req.body.login)
         .then(user => {
             res.status(200).json({
                 user: user
@@ -50,3 +49,22 @@ exports.deleteUser = (req, res) => {
             }
         });
 };
+
+exports.login = (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    userRepository.getUserByUsername(username)
+        .then(user => {
+            if (!user || (password && !(authUtil.comparePasswords(password, user.password)))) {
+                res.status(403).json();
+            } else {
+                req.session.loggedUser = user;
+                res.status(200).json();
+            }
+        })
+}
+
+exports.logout = (req, res) => {
+    req.session.loggedUser = undefined;
+    res.status(200).json();
+}

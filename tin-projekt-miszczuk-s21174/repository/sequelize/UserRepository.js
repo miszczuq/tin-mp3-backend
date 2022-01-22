@@ -20,3 +20,9 @@ exports.deleteUser = (userId) => {
         where: {id: userId}
     });
 };
+
+exports.getUserByUsername = (username) => {
+    return User.findOne({
+        where: {username: username}
+    });
+}
