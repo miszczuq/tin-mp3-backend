@@ -10,8 +10,9 @@ exports.getUserById = (userId) => {
 
 exports.createUser = (userData) => {
     return User.create({
-        login: userData.password,
-        password: userData.password
+        username: userData.username,
+        password: userData.password,
+        role : userData.role
     });
 };
 

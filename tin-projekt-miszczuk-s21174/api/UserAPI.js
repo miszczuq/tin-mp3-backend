@@ -1,5 +1,6 @@
 const userRepository = require('../repository/sequelize/UserRepository');
 const authUtil = require('../util/authUtils');
+const Role = require("../util/role");
 
 exports.getUsers = (req, res) => {
     userRepository.getUsers()
@@ -23,10 +24,11 @@ exports.getUserById = (req, res) => {
 };
 
 exports.createUser = (req, res, next) => {
+    console.log("requestData", req.body)
     userRepository.createUser({
-        login: req.body.password,
+        username: req.body.username,
         password: authUtil.hashPassword(req.body.password),
-        role: req.body.role
+        role: Role.User
     }).then(newObj => {
         res.status(201).json(newObj);
     }).catch(err => {

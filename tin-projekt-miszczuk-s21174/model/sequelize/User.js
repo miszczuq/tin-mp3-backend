@@ -12,9 +12,12 @@ const User = sequelize.define('User', {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-            notEmpty: {},
+            notEmpty: {
+                msg: "Pole jest wymagane"
+            },
             len: {
-                args: [2, 10],
+                args: [5, 10],
+                msg: "Pole powinno zawierać od 5 do 10 znaków"
             }
         }
     },
@@ -22,19 +25,19 @@ const User = sequelize.define('User', {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-            notEmpty: {},
-            len: {
-                args: [5, 50],
-            }
+            notEmpty: {
+                msg : "Pole jest wymagane"}
         }
     },
     role: {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-            notEmpty: {},
+            notEmpty: {
+                msg: "Pole jest wymagane"},
             len: {
-                args: [5, 10],
+                args: [2, 10],
+                msg: "Pole powinno zawierać od 2 do 10 znaków"
             }
         }
     }

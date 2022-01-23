@@ -4,9 +4,11 @@ const authUtil = require('../../util/authUtils');
 const Role = require('../../util/role')
 
 const userApiController = require('../../api/UserAPI');
+const driverApiController = require("../../api/DriverAPI");
 
 // logować się i wylogowywać może każdy - czyli rola użytkownika niezalogowanego
 router.post('/login', userApiController.login);
+router.post('/register', userApiController.createUser);
 router.get('/logout', userApiController.logout);
 
 // wszystkich użytkowników oraz wybranych użytkowników po ID może pobierać zwykły zalogowany użytkownik
