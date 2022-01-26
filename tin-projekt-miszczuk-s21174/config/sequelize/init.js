@@ -28,10 +28,27 @@ module.exports = () => {
         foreignKey: {name: 'gokart_id', allowNull: false}
     });
 
-    let allDrivers, allGokarts;
+    let allDrivers, allGokarts,allUsers;
     return sequelize
         .sync({force: true})
         .then(() => {
+            return User.bulkCreate([
+                {
+                    username: 'admin',
+                    password: authUtil.hashPassword('admin'),
+                    role: 'Admin'
+                },
+                {
+                    username: 'user',
+                    password: authUtil.hashPassword('user123'),
+                    role: 'User'
+                },
+            ]).then(() => {
+                return User.findAll();
+            });
+        })
+        .then(users => {
+            allUsers = users;
             return Driver.findAll();
         })
         .then(drivers => {
@@ -43,7 +60,8 @@ module.exports = () => {
                         last_name: 'Miszczuk',
                         birthdate: '2020-10-11',
                         weight: 12.2,
-                        phone_number: '123 321 1323'
+                        phone_number: '123 321 1323',
+                        manager_id: allUsers[0].id
                     },
                     {
                         first_name: 'Michal',
@@ -51,7 +69,8 @@ module.exports = () => {
                         last_name: 'Kowalski',
                         birthdate: '2020-10-11',
                         weight: 1122.2,
-                        phone_number: '123 211 123'
+                        phone_number: '123 211 123',
+                        manager_id: allUsers[1].id
                     },
                 ]).then(() => {
                     return Driver.findAll();
@@ -112,20 +131,5 @@ module.exports = () => {
             } else {
                 return driverGokarts;
             }
-        }).then(() => {
-            return User.bulkCreate([
-                {
-                    username: 'admin',
-                    password: authUtil.hashPassword('admin'),
-                    role: 'Admin'
-                },
-                {
-                    username: 'user',
-                    password: authUtil.hashPassword('user'),
-                    role: 'User'
-                },
-            ]).then(() => {
-                return User.findAll();
-            });
         });
 };

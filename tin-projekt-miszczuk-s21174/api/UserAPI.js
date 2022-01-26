@@ -1,5 +1,8 @@
 const userRepository = require('../repository/sequelize/UserRepository');
 const authUtil = require('../util/authUtils');
+const config = require('../config/auth/key');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const Role = require("../util/role");
 
 exports.getUsers = (req, res) => {
@@ -11,6 +14,16 @@ exports.getUsers = (req, res) => {
             console.log(err);
         });
 };
+
+exports.getUserRoles = (req, res, next) => {
+    const loggedUser = req.session.loggedUser;
+    if (loggedUser) {
+        res.status(200).json(loggedUser.role);
+    }else {
+        res.status(200).json("Unregistered");
+    }
+    //next();
+}
 
 exports.getUserById = (req, res) => {
     userRepository.getUserById(req.params.userId)
@@ -24,11 +37,10 @@ exports.getUserById = (req, res) => {
 };
 
 exports.createUser = (req, res, next) => {
-    console.log("requestData", req.body)
     userRepository.createUser({
         username: req.body.username,
         password: authUtil.hashPassword(req.body.password),
-        role: Role.User
+        role: Role.User,
     }).then(newObj => {
         res.status(201).json(newObj);
     }).catch(err => {
@@ -58,12 +70,28 @@ exports.login = (req, res) => {
     const password = req.body.password;
     userRepository.getUserByUsername(username)
         .then(user => {
-            if (!user || (password && !(authUtil.comparePasswords(password, user.password)))) {
-                res.status(403).json();
-            } else {
-                req.session.loggedUser = user;
-                res.status(200).json();
+            if(!user){
+                return res.status(401).send({message: "Nieprawidłowa nazwa lub hasło!"})
             }
+
+            bcrypt.compare(password, user.password)
+                .then(isEqual =>{
+                    if(!isEqual){
+                        return res.status(401).send({message: "Nieprawidłowa nazwa lub hasło!"})
+                    }
+                    const token = jwt.sign({
+                        username: user.username,
+                        userId: user.id,
+                    },
+                        config.secret,
+                        {expiresIn: '1h'}
+                        )
+                    res.status(200).json({token: token, userId: user.id})
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(501);
+                })
         });
 }
 

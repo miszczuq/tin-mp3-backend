@@ -8,6 +8,15 @@ const Driver = sequelize.define('Driver', {
         allowNull: false,
         primaryKey: true
     },
+    manager_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: "Pole jest wymagane"
+            }
+        }
+    },
     first_name: {
         type: Sequelize.STRING,
         allowNull: false,

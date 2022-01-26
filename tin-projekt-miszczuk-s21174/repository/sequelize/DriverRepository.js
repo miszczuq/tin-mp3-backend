@@ -6,6 +6,14 @@ exports.getDrivers = () => {
     return Driver.findAll();
 };
 
+exports.getUserDrivers = (userId) => {
+    return Driver.findAll({
+        where: {
+            manager_id:userId
+        }
+    });
+}
+
 exports.getDriverById = (driverId) => {
     return Driver.findByPk(driverId,
         {
@@ -26,7 +34,8 @@ exports.createDriver = (driverData) => {
         last_name: driverData.last_name,
         birthdate: driverData.birthdate,
         weight: driverData.weight,
-        phone_number: driverData.phone_number
+        phone_number: driverData.phone_number,
+        manager_id: driverData.manager_id
     });
 };
 

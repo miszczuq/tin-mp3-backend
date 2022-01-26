@@ -22,6 +22,14 @@ app.use(session({
     resave: false
 }))
 
+app.use((req, res, next) => {
+    res.locals.loggedUser = req.session.loggedUser;
+    if(!res.locals.lginError){
+        res.locals.loginError = undefined;
+    }
+   next();
+});
+
 const sequelizeInit = require('./config/sequelize/init');
 sequelizeInit().catch(err => {
     console.log(err);

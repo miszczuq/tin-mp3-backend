@@ -6,6 +6,9 @@ const DriverGokart = require('../../model/sequelize/DriverGokart');
 
 exports.getDriverGokarts = () => {
     return DriverGokart.findAll({
+        order: [
+            Sequelize.col('lap_time')
+        ],
         include: [{
             model: Driver,
             as: 'driver'
