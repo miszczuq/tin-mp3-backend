@@ -43,6 +43,16 @@ module.exports = () => {
                     password: authUtil.hashPassword('user123'),
                     role: 'User'
                 },
+                {
+                    username: 'szczepan',
+                    password: authUtil.hashPassword('szczepan123'),
+                    role: 'User'
+                },
+                {
+                    username: 'mistrz',
+                    password: authUtil.hashPassword('mistrz123'),
+                    role: 'User'
+                },
             ]).then(() => {
                 return User.findAll();
             });

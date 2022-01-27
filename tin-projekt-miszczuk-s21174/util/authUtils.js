@@ -29,22 +29,24 @@ exports.permitAuthenticatedUserWithRole = (roles) => {
 }
 
 exports.isAdmin = (req) => {
-    let userId = this.getLoggedUserId(req)
-    console.log("userIdl", userId)
-
-    const result = UserRepository.getUserById(userId)
-        .then(user => user.role === 'Admin')
-    console.log("isAdmin Resukt", result)
-    return result;
+    return req.user.role === 'Admin'
 }
+//
+// exports.getLoggedUserRole = (req) => {
+//     let userId = this.getLoggedUserId(req)
+//
+//     let user
+//         UserRepository.getSyncUserById(userId)
+//         .then(response => {user = response;})
+//             .catch( user = 'siema')
+//     return user.role;
+// }
 
 exports.getLoggedUserId = (req) => {
     if (req.headers && req.headers.authorization) {
-        console.log("headers in authUtil", req.headers)
         let authorization = req.headers.authorization.split(' ')[1],
             decoded;
         decoded = jwt.verify(authorization, config.secret);
-        console.log("decoded in authUtil", decoded)
         return decoded.userId;
     }
     return undefined;

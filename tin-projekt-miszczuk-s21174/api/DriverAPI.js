@@ -25,52 +25,27 @@ exports.getDriverById = (req, res) => {
 };
 
 exports.getDriversForRole = (req, res) => {
-    console.log("Headers", req.headers)
-    const managerId = getLoggedUserId(req);
-    console.log("Id wyszukane po TOKENIE", managerId)
-    console.log("IsAdmin value", isAdmin(req))
-    isAdmin(req)
-        .then((resp) => {
-            if(resp) {
+    //const managerId = getLoggedUserId(req);
+    console.log("reqUserDriver GET", req.user.userId)
+            if(isAdmin(req)) {
+                console.log("isAdmin")
                 DriverRepository.getDrivers()
                     .then(drivers => {
-                        console.log("Kierowcy dla admina", drivers)
                         res.status(200).json(drivers);
                     })
                     .catch((err) => {
                         res.status(500).json(err);
                     });
             }else{
-                DriverRepository.getUserDrivers(managerId)
+                console.log("isNOTAdmin")
+                DriverRepository.getUserDrivers(req.user.userId)
                         .then(drivers => {
-                            console.log("Kierowcy dla Zwyklaka", drivers)
                             res.status(200).json(drivers);
                         })
                         .catch((err) => {
                             res.status(500).json(err);
                         });
             }
-        })
-
-    // if(isAdmin(req)) {
-    //     DriverRepository.getDrivers()
-    //         .then(drivers => {
-    //             console.log("Kierowcy dla admina", drivers)
-    //             res.status(200).json(drivers);
-    //         })
-    //         .catch((err) => {
-    //             res.status(500).json(err);
-    //         });
-    // }else{
-    //     DriverRepository.getUserDrivers(managerId)
-    //         .then(drivers => {
-    //             console.log("Kierowcy dla Zwyklaka", drivers)
-    //             res.status(200).json(drivers);
-    //         })
-    //         .catch((err) => {
-    //             res.status(500).json(err);
-    //         });
-    // }
 }
 
 exports.createDriver = (req, res) => {
@@ -98,13 +73,26 @@ exports.updateDriver = (req, res) => {
 
 exports.deleteDriver = (req, res) => {
     const driverId = req.params.driverId;
-    DriverRepository.deleteDriver(driverId)
-        .then(result => {
-            res.status(200).json({
-                driver: result
+    if(isAdmin(req)) {
+        DriverRepository.deleteDriver(driverId)
+            .then(result => {
+                res.status(200).json({
+                    driver: result
+                });
+            })
+            .catch((err) => {
+                res.status(401).json(err);
             });
-        })
-        .catch((err) => {
-            res.status(500).json(err);
-        });
+    }else{
+        DriverRepository.deleteUserDriver(driverId, req.user.userId)
+            .then(result => {
+                res.status(200).json({
+                    driver: result
+                });
+            })
+            .catch((err) => {
+                console.log("user nie moze usunac swojego kierowcy")
+                res.status(401).json(err);
+            });
+    }
 };

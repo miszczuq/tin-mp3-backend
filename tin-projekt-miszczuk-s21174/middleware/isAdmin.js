@@ -1,20 +1,11 @@
 const jwt = require('jsonwebtoken');
 const config = require ('../config/auth/key');
+const authUtil = require('../util/authUtils');
 
 module.exports = (req, res, next) => {
-    //TODO: Midellware do wsadzenia w endpoint i sprawdzania czy jest adminem, możliwe że wystarczy to sprawdzic na frontencdzie
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-
-    if(token === 'null' || token === undefined){
-        return res.sendStatus(401)
+    console.log("isAdmin req user role", req.user.role)
+    if(req.user.role !== 'Admin'){
+        return res.sendStatus(403)
     }
-
-    jwt.verify(token, config.secret, (err, user) =>{
-        if(err){
-            return res.sendStatus(403)
-        }
-        req.user = user;
-    })
     next();
 }

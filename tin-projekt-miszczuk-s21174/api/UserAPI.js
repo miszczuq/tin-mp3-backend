@@ -82,11 +82,12 @@ exports.login = (req, res) => {
                     const token = jwt.sign({
                         username: user.username,
                         userId: user.id,
+                        role: user.role
                     },
                         config.secret,
                         {expiresIn: '1h'}
                         )
-                    res.status(200).json({token: token, userId: user.id})
+                    res.status(200).json({token: token, userId: user.id, role: user.role})
                 })
                 .catch(err => {
                     console.log(err);

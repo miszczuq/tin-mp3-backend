@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const config = require ('../config/auth/key');
+const authUtil = require('../util/authUtils');
 
 module.exports = (req, res, next) => {
     const authHeader = req.headers['authorization']
@@ -7,11 +8,12 @@ module.exports = (req, res, next) => {
     if(token === 'null' || token === undefined){
         return res.sendStatus(401)
     }
-    jwt.verify(token, config.secret, (err, user) =>{
+   jwt.verify(token, config.secret, (err, user) =>{
         if(err){
-            return res.sendStatus(403)
+            return res.sendStatus(403).message('You need to be Authenticated')
         }
         req.user = user;
     })
+    console.log("IsAuth request user data: ",req.user)
     next();
 }

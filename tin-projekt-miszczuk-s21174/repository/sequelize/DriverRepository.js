@@ -48,3 +48,12 @@ exports.deleteDriver = (driverId) => {
         where: {id: driverId}
     });
 };
+
+exports.deleteUserDriver = (driverId, userId) => {
+    return Driver.destroy({
+        where: {
+            id: driverId,
+            manager_id: userId
+        }
+    });
+};
