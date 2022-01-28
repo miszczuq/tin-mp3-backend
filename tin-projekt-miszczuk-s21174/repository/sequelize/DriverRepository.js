@@ -28,6 +28,24 @@ exports.getDriverById = (driverId) => {
         });
 };
 
+exports.getUserDriverById = (driverId, userId) => {
+    return Driver.findOne(
+        {
+            include: [{
+                model: DriverGokart,
+                as: 'laps',
+                include: [{
+                    model: Gokart,
+                    as: 'gokart'
+                }]
+            }],
+            where: {
+                manager_id: userId,
+                id: driverId
+            }
+        });
+};
+
 exports.createDriver = (driverData) => {
     return Driver.create({
         first_name: driverData.first_name,
@@ -41,6 +59,13 @@ exports.createDriver = (driverData) => {
 
 exports.updateDriver = (driverId, driverData) => {
     return Driver.update(driverData, {where: {id: driverId}});
+};
+
+exports.updateUserDriver = (driverId,userId, driverData) => {
+    return Driver.update(driverData, {where: {
+        id: driverId,
+        manager_id: userId
+        }});
 };
 
 exports.deleteDriver = (driverId) => {

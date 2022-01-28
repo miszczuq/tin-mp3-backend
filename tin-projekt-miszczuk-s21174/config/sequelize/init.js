@@ -27,6 +27,16 @@ module.exports = () => {
         as: 'gokart',
         foreignKey: {name: 'gokart_id', allowNull: false}
     });
+    User.hasMany(Driver,{
+        as: 'driver',
+        foreignKey: {name: 'manager_id', allowNull: false},
+        constraint: true,
+        onDelete: 'CASCADE'
+    });
+    Driver.belongsTo(User, {
+        as: 'manager',
+        foreignKey: {name: 'manager_id', allowNull: false}
+    })
 
     let allDrivers, allGokarts,allUsers;
     return sequelize
@@ -66,21 +76,43 @@ module.exports = () => {
                 return Driver.bulkCreate([
                     {
                         first_name: 'Michal',
-                        second_name: 'Janek',
                         last_name: 'Miszczuk',
                         birthdate: '2020-10-11',
-                        weight: 12.2,
+                        weight: 100.2,
                         phone_number: '123 321 1323',
                         manager_id: allUsers[0].id
                     },
                     {
                         first_name: 'Michal',
-                        second_name: 'Janek',
-                        last_name: 'Kowalski',
+                        last_name: 'Ruszczar',
                         birthdate: '2020-10-11',
-                        weight: 1122.2,
-                        phone_number: '123 211 123',
+                        weight: 72.2,
+                        phone_number: '123 888 123',
+                        manager_id: allUsers[0].id
+                    },
+                    {
+                        first_name: 'Grzegorz',
+                        last_name: 'Celowski',
+                        birthdate: '2020-10-11',
+                        weight: 82.2,
+                        phone_number: '123 587 123',
                         manager_id: allUsers[1].id
+                    },
+                    {
+                        first_name: 'Zbigniew',
+                        last_name: 'Barowski',
+                        birthdate: '2020-10-11',
+                        weight: 92.2,
+                        phone_number: '123 876 123',
+                        manager_id: allUsers[1].id
+                    },
+                    {
+                        first_name: 'Franek',
+                        last_name: 'Jankowski',
+                        birthdate: '2020-10-14',
+                        weight: 112.2,
+                        phone_number: '123 211 999',
+                        manager_id: allUsers[2].id
                     },
                 ]).then(() => {
                     return Driver.findAll();
@@ -98,7 +130,7 @@ module.exports = () => {
                 return Gokart.bulkCreate([
                     {
                         brand: 'Audi',
-                        model: 'E5',
+                        model: 'A3',
                         color: 'czarny',
                         horse_power: 123,
                         weight: 12.2,
@@ -106,7 +138,7 @@ module.exports = () => {
                     },
                     {
                         brand: 'Mercedes',
-                        model: 'A3',
+                        model: 'E500',
                         color: 'biały',
                         horse_power: 1233,
                         weight: 12.122,
@@ -134,9 +166,11 @@ module.exports = () => {
         .then(driverGokarts => {
             if (!driverGokarts || driverGokarts.length === 0) {
                 return DriverGokart.bulkCreate([
-                    {driver_id: allDrivers[1].id, gokart_id: allGokarts[0].id, lap_time: 125.321, wet_track: true},
-                    {driver_id: allDrivers[1].id, gokart_id: allGokarts[1].id, lap_time: 132.321, wet_track: false},
-                    {driver_id: allDrivers[0].id, gokart_id: allGokarts[1].id, lap_time: 123.321, wet_track: false},
+                    {driver_id: allDrivers[1].id, gokart_id: allGokarts[0].id, lap_time: 142.321, wet_track: true},
+                    {driver_id: allDrivers[1].id, gokart_id: allGokarts[1].id, lap_time: 152.121, wet_track: false},
+                    {driver_id: allDrivers[2].id, gokart_id: allGokarts[2].id, lap_time: 323.411, wet_track: false},
+                    {driver_id: allDrivers[0].id, gokart_id: allGokarts[0].id, lap_time: 113.531, wet_track: false},
+                    {driver_id: allDrivers[1].id, gokart_id: allGokarts[0].id, lap_time: 99.311, wet_track: false},
                 ]);
             } else {
                 return driverGokarts;

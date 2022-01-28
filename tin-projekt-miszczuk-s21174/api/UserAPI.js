@@ -71,13 +71,13 @@ exports.login = (req, res) => {
     userRepository.getUserByUsername(username)
         .then(user => {
             if(!user){
-                return res.status(401).send({message: "Nieprawidłowa nazwa lub hasło!"})
+                return res.status(401).send({message: "wrong_creds"})
             }
 
             bcrypt.compare(password, user.password)
                 .then(isEqual =>{
                     if(!isEqual){
-                        return res.status(401).send({message: "Nieprawidłowa nazwa lub hasło!"})
+                        return res.status(401).send({message: "wrong_creds"})
                     }
                     const token = jwt.sign({
                         username: user.username,
