@@ -9,7 +9,7 @@ exports.getDrivers = () => {
 exports.getUserDrivers = (userId) => {
     return Driver.findAll({
         where: {
-            manager_id:userId
+            manager_id: userId
         }
     });
 }
@@ -61,11 +61,13 @@ exports.updateDriver = (driverId, driverData) => {
     return Driver.update(driverData, {where: {id: driverId}});
 };
 
-exports.updateUserDriver = (driverId,userId, driverData) => {
-    return Driver.update(driverData, {where: {
-        id: driverId,
-        manager_id: userId
-        }});
+exports.updateUserDriver = (driverId, userId, driverData) => {
+    return Driver.update(driverData, {
+        where: {
+            id: driverId,
+            manager_id: userId
+        }
+    });
 };
 
 exports.deleteDriver = (driverId) => {

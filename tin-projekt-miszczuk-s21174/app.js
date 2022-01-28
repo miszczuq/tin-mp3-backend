@@ -24,10 +24,10 @@ app.use(session({
 
 app.use((req, res, next) => {
     res.locals.loggedUser = req.session.loggedUser;
-    if(!res.locals.lginError){
+    if (!res.locals.lginError) {
         res.locals.loginError = undefined;
     }
-   next();
+    next();
 });
 
 const sequelizeInit = require('./config/sequelize/init');

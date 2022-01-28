@@ -12,18 +12,9 @@ exports.getUsers = (req, res) => {
         })
         .catch(err => {
             console.log(err);
+            res.status(500).json();
         });
 };
-
-exports.getUserRoles = (req, res, next) => {
-    const loggedUser = req.session.loggedUser;
-    if (loggedUser) {
-        res.status(200).json(loggedUser.role);
-    }else {
-        res.status(200).json("Unregistered");
-    }
-    //next();
-}
 
 exports.getUserById = (req, res) => {
     userRepository.getUserById(req.params.userId)
@@ -70,28 +61,28 @@ exports.login = (req, res) => {
     const password = req.body.password;
     userRepository.getUserByUsername(username)
         .then(user => {
-            if(!user){
+            if (!user) {
                 return res.status(401).send({message: "wrong_creds"})
             }
 
             bcrypt.compare(password, user.password)
-                .then(isEqual =>{
-                    if(!isEqual){
+                .then(isEqual => {
+                    if (!isEqual) {
                         return res.status(401).send({message: "wrong_creds"})
                     }
                     const token = jwt.sign({
-                        username: user.username,
-                        userId: user.id,
-                        role: user.role
-                    },
+                            username: user.username,
+                            userId: user.id,
+                            role: user.role
+                        },
                         config.secret,
                         {expiresIn: '1h'}
-                        )
+                    )
                     res.status(200).json({token: token, userId: user.id, role: user.role})
                 })
                 .catch(err => {
                     console.log(err);
-                    res.status(501);
+                    res.status(500).json();
                 })
         });
 }

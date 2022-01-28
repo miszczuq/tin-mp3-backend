@@ -1,6 +1,5 @@
 const DriverRepository = require('../repository/sequelize/DriverRepository');
 const {isAdmin} = require("../util/authUtils");
-const {getLoggedUserId} = require("../util/authUtils");
 
 exports.getDrivers = (req, res) => {
     DriverRepository.getDrivers()
@@ -13,10 +12,8 @@ exports.getDrivers = (req, res) => {
 };
 
 exports.getDriverById = (req, res) => {
-    console.log('driverByID req', req.params);
     const driverId = req.params.driverId;
-    if(isAdmin(req)) {
-        console.log('DriverAPI is Admin');
+    if (isAdmin(req)) {
         DriverRepository.getDriverById(driverId)
             .then(driver => {
                 if (!driver) {
@@ -25,9 +22,8 @@ exports.getDriverById = (req, res) => {
                     res.status(200).json(driver);
                 }
             });
-    }else{
-        console.log('DriverAPI not Admin');
-        DriverRepository.getUserDriverById(driverId,req.user.userId)
+    } else {
+        DriverRepository.getUserDriverById(driverId, req.user.userId)
             .then(driver => {
                 if (driver && driver.manager_id === req.user.userId) {
                     res.status(200).json(driver);
@@ -39,27 +35,23 @@ exports.getDriverById = (req, res) => {
 };
 
 exports.getDriversForRole = (req, res) => {
-    //const managerId = getLoggedUserId(req);
-    console.log("reqUserDriver GET", req.user.userId)
-            if(isAdmin(req)) {
-                console.log("isAdmin")
-                DriverRepository.getDrivers()
-                    .then(drivers => {
-                        res.status(200).json(drivers);
-                    })
-                    .catch((err) => {
-                        res.status(401).json(err);
-                    });
-            }else{
-                console.log("isNOTAdmin")
-                DriverRepository.getUserDrivers(req.user.userId)
-                        .then(drivers => {
-                            res.status(200).json(drivers);
-                        })
-                        .catch((err) => {
-                            res.status(401).json(err);
-                        });
-            }
+    if (isAdmin(req)) {
+        DriverRepository.getDrivers()
+            .then(drivers => {
+                res.status(200).json(drivers);
+            })
+            .catch((err) => {
+                res.status(401).json(err);
+            });
+    } else {
+        DriverRepository.getUserDrivers(req.user.userId)
+            .then(drivers => {
+                res.status(200).json(drivers);
+            })
+            .catch((err) => {
+                res.status(401).json(err);
+            });
+    }
 }
 
 exports.createDriver = (req, res) => {
@@ -74,7 +66,7 @@ exports.createDriver = (req, res) => {
 
 exports.updateDriver = (req, res) => {
     const driverId = req.params.driverId;
-    if(isAdmin(req)) {
+    if (isAdmin(req)) {
         DriverRepository.updateDriver(driverId, req.body)
             .then(result => {
                 res.status(200).json({
@@ -84,17 +76,14 @@ exports.updateDriver = (req, res) => {
             .catch((err) => {
                 res.status(500).json(err);
             });
-    }else{
-        console.log("in else(notADMIN)")
+    } else {
         DriverRepository.updateUserDriver(driverId, req.user.userId, req.body)
             .then(result => {
-                console.log("UpdateUSERDRIVER udało sie RESULT: ", result)
                 res.status(200).json({
                     driver: result
                 });
             })
             .catch((err) => {
-                console.log("NIEPOWODZENIE!!!!", err)
                 res.status(500).json(err);
             });
     }
@@ -102,7 +91,7 @@ exports.updateDriver = (req, res) => {
 
 exports.deleteDriver = (req, res) => {
     const driverId = req.params.driverId;
-    if(isAdmin(req)) {
+    if (isAdmin(req)) {
         DriverRepository.deleteDriver(driverId)
             .then(result => {
                 res.status(200).json({
@@ -112,7 +101,7 @@ exports.deleteDriver = (req, res) => {
             .catch((err) => {
                 res.status(401).json(err);
             });
-    }else{
+    } else {
         DriverRepository.deleteUserDriver(driverId, req.user.userId)
             .then(result => {
                 res.status(200).json({

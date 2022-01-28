@@ -12,7 +12,7 @@ exports.createUser = (userData) => {
     return User.create({
         username: userData.username,
         password: userData.password,
-        role : userData.role
+        role: userData.role
     });
 };
 
